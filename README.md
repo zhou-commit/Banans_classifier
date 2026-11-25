@@ -154,7 +154,7 @@ prob = torch.softmax(model(inputs), dim=1)                        # logits → �
 第 7 轮之后 `train_loss` 从 0.0242 降到 0.0057，而 `val_loss` 从 0.0657 升到 0.0920（+40%），属过拟合，故按 loss 选优停在第 7 轮。准确率在这个区间内的波动（±0.5pp ≈ 6 张图）落在噪声内，不作为判据。
 
 ## 四、主要注意事项
-
+以下都是我在实验当中出过的一些错误，仅作分享以示警
 1. **`best_loss` 必须初始化为 `float('inf')`**。写成 0 会导致恒不保存，且不报错。症状：日志里每个 epoch 多打印一行（走了 `else` 分支）。
 2. **对 `state_dict` 不能调 `.to()`**。只有 `torch.save(model)` 存的整个对象才可以。
 3. **推理的 transform 必须与验证集一致**，不能与训练集一致。三项对齐：`Resize` 尺寸、`ToTensor`、`Normalize` 常数。
